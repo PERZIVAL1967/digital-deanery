@@ -1,0 +1,1 @@
+INSERT INTO room (name) VALUES ('302') ON CONFLICT (name) DO NOTHING;

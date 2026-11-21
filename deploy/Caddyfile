@@ -1,0 +1,8 @@
+5-129-242-179.sslip.io {
+	encode zstd gzip
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy app:3000
+}
+http://5.129.242.179 {
+	redir https://5-129-242-179.sslip.io{uri} permanent
+}

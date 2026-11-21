@@ -1,0 +1,23 @@
+# Server-only overlay: the app always on, restart on crash/boot, Caddy for HTTPS.
+services:
+  app:
+    restart: unless-stopped
+    ports: !reset []
+    environment:
+      DATABASE_URL: postgres://deanery:${POSTGRES_PASSWORD}@db:5432/deanery
+      COOKIE_SECURE: "true"
+  db:
+    restart: unless-stopped
+    ports: !reset []
+    shm_size: 128mb
+    logging: {driver: local}
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [app]
+volumes:
+  caddy_data:
